@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <title>
+            Login
+        </title>
+        <style>
+            p,li{
+                font-size: 0.75rem;
+                line-height: 1rem;
+                color: gray;
+            }
+            label{
+                font-size: 1.125rem;
+                line-height: 1.75rem;
+                display: inline-block;
+                color: black;
+                margin-top: 1rem;
+            }
+            .errorlist{
+                color: red !important;
+                list-style-type: none;
+                background: rgb(255, 169, 169);
+                display: block;
+                border-radius: 5px;
+                padding: 20px;
+                margin-top: 30px;
+                
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="flex justify-center w-full">
+            <div class="w-[380px] m-20">
+                <div class="text-4xl font-bold">
+                    Todo Manager
+                </div>
+                <br>
+                <br>
+                <div class="text-2xl">
+                    Login
+                </div>
+                <br>
+                <form method="post" class="tasks-form">
+                    {{ form.non_field_errors }}
+                    <p>
+                        {{ form.username.errors }}
+                        <label for="id_username">Username:</label>
+                        <input type="text" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="150" required id="id_username" class="p-3 bg-gray-200 rounded-xl block w-full my-2 text-base text-black">
+                    </p>
+                    <p>
+                        {{ form.password.errors }}
+                        <label for="id_password">Password:</label>
+                        <input type="password" name="password" autocomplete="current-password" required id="id_password" class="p-3 bg-gray-200 rounded-xl block w-full my-2 text-base text-black">
+                    </p>
+                    {% csrf_token %}
+                    <button type="submit" class="bg-red-500 block hover:bg-red-600 text-white rounded-xl p-3 text-base cursor-pointer transition w-full mt-4">
+                        Login
+                    </button>
+                </form>
+                
+                <br>
+                <a href="signup" class="text-sm text-red-500 block text-center">
+                    Create an account
+                </a>
+            </div>
+        </div>
+    </body>
+</html>

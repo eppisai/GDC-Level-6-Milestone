@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <title>
+            Todo Manager 
+        </title>
+    </head>
+    <body>
+        <div class="flex justify-center w-full">
+            <div class="w-[340px] m-20">
+                <div class="flex items-center justify-between">
+                    <span class="text-4xl font-bold">
+                        Hi {{request.user}}
+                    </span>
+                    <a href="user/logout" class="text-red-400">
+                        Log out
+                    </a>
+                </div>
+                <div class="text-gray-400 my-3">
+                    {{completed_tasks}} of {{total_tasks}} tasks completed
+                </div>
+                <div class="mb-3">
+                    <a class="t-list-butt cursor-pointer py-1 px-6 rounded-3xl inline-block {% if request.GET.type != 'completed' and request.GET.type != 'pending' %} text-red-400 bg-red-100 {% endif %}" btype="all" href="?type=all">
+                        All
+                    </a>
+                    <a class="t-list-butt cursor-pointer py-1 px-6 rounded-3xl inline-block m-1 {% if request.GET.type == 'pending' %} text-red-400 bg-red-100 {% endif %}" btype="pending" href="?type=pending">
+                        Pending
+                    </a>
+                    <a class="t-list-butt cursor-pointer py-1 px-6 rounded-3xl inline-block m-1 {% if request.GET.type == 'completed' %} text-red-400 bg-red-100 {% endif %}" btype="completed" href="?type=completed">
+                        Completed
+                    </a>
+                </div>
+                {% for task in tasks %}
+                    <div task-block class="bg-slate-100 rounded-lg p-3 flex justify-between items-center mb-5 task-complete-{{task.completed}}">
+                        <div class="flex">
+                            <div class="ml-2">
+                                <a class="font-bold {% if task.completed == True %} line-through text-red-400 {% endif %}">
+                                    {{task.title}}  <span class="text-gray-400">&middot; {{task.priority}}</span>
+                                </a>
+                                <br>
+                                <span class="text-gray-500 text-sm">
+                                    {{task.created_date | date:"D d M"}}
+                                </span>
+                            </div>
+                        </div>
+                        <div>
+                            <a href="/update-task/{{task.id}}" class="bg-teal-400 hover:bg-teal-500 transition m-1 text-white rounded-lg inline-flex items-center justify-center w-[38px] h-[38px]" title="Update">
+                                <img src="https://user-images.githubusercontent.com/54789531/156121333-dcc150a3-d51c-4491-92af-ec7f5ab784ba.svg" class="w-6 h-6">
+                            </a>
+                            <a href="/delete-task/{{task.id}}" class="bg-[#F43F5E] hover:bg-red-600 transition m-1 text-white rounded-lg inline-flex items-center justify-center w-[38px] h-[38px]" title="Delete">
+                                <img src="https://user-images.githubusercontent.com/54789531/156121476-fa028915-18f4-4e49-9ab7-fe6a00b3b6e1.svg"  class="w-6 h-6"> 
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+                <a href="create-task" class="bg-red-500 block hover:bg-red-600 text-white rounded-xl p-3 text-base cursor-pointer transition w-full mt-10 text-center">
+                    Add
+                </a>
+            </div>
+        </div>
+        
+        
+    </body>
+</html>
