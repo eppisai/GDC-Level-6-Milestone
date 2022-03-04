@@ -17,7 +17,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 # User Views
 
-
 class AuthorizedTaskManager(LoginRequiredMixin):
     def get_queryset(self):
         return Task.objects.filter(deleted=False, user=self.request.user)
@@ -45,6 +44,8 @@ class UserCreateView(CreateView):
     success_url = "/user/login"
 
 # Task Views
+
+
 class GenericTaskView(LoginRequiredMixin, ListView):
     queryset = Task.objects.filter(deleted=False, completed=False)
     template_name = "tasks.html"
@@ -129,6 +130,7 @@ class GenericTaskCreateView(CreateView):
     success_url = "/tasks"
 
     def form_valid(self, form):
+
         # check and append all priorities
         form_priority = form.cleaned_data['priority']
 
@@ -141,27 +143,20 @@ class GenericTaskCreateView(CreateView):
 
 
 def checkPriority(priority_num, user_a):
-    has_issue = True
     p_i = priority_num
     to_change = []
-    while(has_issue):
-        # check if there is a task with priority
-        print(f"Checking for priority {p_i}")
+
+    while(1):
         try:
             model = Task.objects.get(
                 priority=p_i, deleted=False, completed=False, user=user_a)
+            model.priority = int(model.priority) + 1
             to_change.append(model)
+
         except Task.DoesNotExist:
-            has_issue = False
-            print(f"There is no task with this priority")
+            break
 
         p_i += 1
 
-    for i in range(len(to_change)):
-        obj = to_change[i]
-        print(f"Old Priority = {obj.priority}")
-        obj.priority = int(obj.priority) + 1
-        print(f"New Priority = {obj.priority}")
-
-    if(len(to_change) > 0):
+    if to_change:
         Task.objects.bulk_update(to_change, ['priority'])
